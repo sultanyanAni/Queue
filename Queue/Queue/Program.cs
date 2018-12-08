@@ -18,7 +18,7 @@ namespace Queue
             }
 
             queue.View();
-
+            Console.ReadKey();
         }
     }
 }
