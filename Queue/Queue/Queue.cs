@@ -19,9 +19,9 @@ namespace Queue
         {
             Capacity = capacity;
             Count = 0;
-            Data = new T[10];
+            Data = new T[Capacity];
         }
-      
+
         public void View()
         {
             for (int i = head; i >= tail; i--)
@@ -31,13 +31,17 @@ namespace Queue
         }
         public void Resize(int size)
         {
-            T[] tempArray= new T[Data.Length * 2];
+            T[] tempArray = new T[Data.Length * size];
             int tempIndexCount = tempArray.Length - 1;
             for (int i = head; i >= tail; i--)
             {
                 tempArray[tempIndexCount] = Data[i];
                 tempIndexCount--;
             }
+            tail = tempIndexCount;
+            
+            Data = tempArray;
+           // head = Data.Length - 1;
 
         }
         public void Enqueue(T itemToAdd)
@@ -45,29 +49,12 @@ namespace Queue
 
             if (Count == Data.Length)
             {
-                T[] tempArray;
-                if (Data.Length > 0)
-                {
-                    tempArray = new T[Data.Length * 2];
-                    int tempIndexCount = tempArray.Length - 1;
-                    for (int i = head; i >= tail; i--)
-                    {
-                        tempArray[tempIndexCount] = Data[i];
-                        tempIndexCount--;
-                    }
-                
-                    tempArray[tempIndexCount] = itemToAdd;
-                }
-                else
-                {
-                    tempArray = new T[Data.Length + 2];
-                    tempArray[tempArray.Length-1] = itemToAdd;
-               
-                    
-                }
+
+                Resize(2);
+                Data[tail] = itemToAdd;
 
                 Count++;
-                Data = tempArray;
+
                 tail = (Data.Length - 1) - Count;
                 head = Data.Length - 1;
 
@@ -75,7 +62,7 @@ namespace Queue
             else
             {
                 Data[tail] = itemToAdd;
-               tail = (Data.Length - 1) - Count;
+                tail = (Data.Length - 1) - Count;
                 Count++;
                 return;
             }
